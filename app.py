@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 import streamlit as st
+from utils.transcriber import transcribe_video
 
 UPLOAD_DIR = Path("data/uploads")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -54,6 +55,10 @@ if st.button("Process Video"):
 
         with open(file_path, "wb") as f:
             f.write(video_file.getbuffer())
+        with st.spinner("Generating transcript..."):
+             transcript = transcribe_video(file_path)
+        st.session_state.transcript = transcript     
+        st.success("Transcript generated successfully!")    
 
         st.success("Video uploaded successfully!")
 
@@ -83,7 +88,12 @@ transcript_tab, translation_tab, notes_tab, quiz_tab = st.tabs(
 )
 
 with transcript_tab:
-    st.info("Transcript will appear here")
+
+    if "transcript" in st.session_state:
+        st.write(st.session_state.transcript)
+
+    else:
+        st.info("Transcript will appear here")    
 
 with translation_tab:
     st.info("Translation will appear here")
