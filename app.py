@@ -3,6 +3,7 @@ import streamlit as st
 
 from utils.transcriber import transcribe_video
 from utils.notes_generator import generate_notes
+from utils.quiz_generator import generate_quiz
 
 # ==================================================
 # Create required directories
@@ -118,6 +119,15 @@ if st.button("Process Video"):
             st.session_state.notes = notes
 
             st.success("Study notes generated successfully!")
+            # ------------------------------------------
+            # Generate Quiz
+            # ------------------------------------------
+            with st.spinner("Generating quiz..."):
+                 quiz = generate_quiz(
+                      transcript[:5000]
+                      )
+            st.session_state.quiz = quiz
+            st.success("Quiz generated successfully!")
 
         except Exception as e:
 
@@ -207,9 +217,80 @@ with notes_tab:
 # ==================================================
 # Quiz Tab
 # ==================================================
-
 with quiz_tab:
 
-    st.info(
-        "Quiz feature coming soon."
-    )
+    if "quiz" in st.session_state:
+
+        quiz = st.session_state.quiz
+
+        st.subheader("Interactive Quiz")
+
+        with st.form("quiz_form"):
+
+            user_answers = []
+
+            for i, q in enumerate(quiz):
+
+                answer = st.radio(
+                    f"Q{i+1}. {q['question']}",
+                    q["options"],
+                    key=f"q_{i}"
+                )
+
+                user_answers.append(answer)
+
+            submitted = st.form_submit_button(
+                "Submit Quiz"
+            )
+
+        if submitted:
+
+            score = 0
+
+            st.markdown("---")
+            st.subheader("Results")
+
+            for i, q in enumerate(quiz):
+
+                user_answer = user_answers[i]
+                correct_answer = q["answer"]
+
+                if user_answer == correct_answer:
+
+                    score += 1
+
+                    st.success(
+                        f"Q{i+1}: Correct"
+                    )
+
+                else:
+
+                    st.error(
+                        f"Q{i+1}: Incorrect"
+                    )
+
+                    st.write(
+                        f"Your Answer: {user_answer}"
+                    )
+
+                    st.write(
+                        f"Correct Answer: {correct_answer}"
+                    )
+
+                    if "explanation" in q:
+
+                        st.info(
+                            f"Explanation: {q['explanation']}"
+                        )
+
+                st.markdown("---")
+
+            st.success(
+                f"🎯 Final Score: {score}/{len(quiz)}"
+            )
+
+    else:
+
+        st.info(
+            "Quiz will appear here"
+        )
