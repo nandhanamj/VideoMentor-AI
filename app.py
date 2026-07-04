@@ -1,4 +1,9 @@
+import os
+from pathlib import Path
 import streamlit as st
+
+UPLOAD_DIR = Path("data/uploads")
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 st.set_page_config(
     page_title="VideoMentor AI",
@@ -41,17 +46,28 @@ language = st.selectbox(
         "Arabic"
     ]
 )
-
 if st.button("Process Video"):
-    st.success("Phase 1 UI Working Successfully!")
 
     if video_file:
-        st.write("Uploaded:", video_file.name)
 
-    if youtube_url:
-        st.write("URL:", youtube_url)
+        file_path = UPLOAD_DIR / video_file.name
 
-    st.write("Selected Language:", language)
+        with open(file_path, "wb") as f:
+            f.write(video_file.getbuffer())
+
+        st.success("Video uploaded successfully!")
+
+        st.write(f"Saved to: {file_path}")
+
+    elif youtube_url:
+
+        st.success("YouTube URL received!")
+
+        st.write(youtube_url)
+
+    else:
+
+        st.warning("Please upload a video or provide a YouTube URL.")
 
 st.markdown("---")
 
