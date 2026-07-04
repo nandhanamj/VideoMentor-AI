@@ -1,0 +1,109 @@
+# Python
+
+**pycache**/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+
+venv/
+env/
+.venv/
+
+# Environment Variables
+
+.env
+
+# Streamlit
+
+.streamlit/secrets.toml
+
+# IDE
+
+.vscode/
+.idea/
+
+# OS Files
+
+.DS_Store
+Thumbs.db
+
+# Logs
+
+*.log
+
+# Python Build Files
+
+build/
+dist/
+*.egg-info/
+
+# Jupyter Notebooks
+
+.ipynb_checkpoints/
+
+# Uploaded Videos
+
+uploads/
+
+# Generated Outputs
+
+outputs/
+
+# Audio Files
+
+audio/
+*.wav
+*.mp3
+
+# Temporary Files
+
+temp/
+tmp/
+
+# Whisper Cache
+
+.cache/
+
+# Hugging Face Cache
+
+huggingface/
+hf_cache/
+
+# Model Files
+
+models/
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+
+# PyTorch
+
+torch_cache/
+
+# yt-dlp Downloads
+
+downloads/
+
+# PDF Exports
+
+*.pdf
+
+# Test Coverage
+
+.coverage
+htmlcov/
+
+# Generated Transcripts
+
+transcripts/
+
+# Generated Notes
+
+notes/
+
+# Generated Quizzes
+
+quizzes/
